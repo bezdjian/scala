@@ -1,0 +1,20 @@
+package com.example.config
+
+import org.springframework.context.annotation.{Bean, Configuration}
+import springfox.documentation.builders.{PathSelectors, RequestHandlerSelectors}
+import springfox.documentation.spi.DocumentationType
+import springfox.documentation.spring.web.plugins.Docket
+import springfox.documentation.swagger2.annotations.EnableSwagger2
+
+@EnableSwagger2
+@Configuration
+class SwaggerConfig {
+  @Bean
+  def api(): Docket = {
+    new Docket(DocumentationType.SWAGGER_2)
+      .select()
+      .apis(RequestHandlerSelectors.basePackage("com.example"))
+      .paths(PathSelectors.any())
+      .build()
+  }
+}
