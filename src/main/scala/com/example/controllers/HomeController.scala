@@ -25,8 +25,16 @@ class HomeController @Autowired()(private val userService: UserService) {
     respond(response, HttpStatus.OK)
   }
 
-  private def respond(response: HttpServletResponse): Unit = {
-    response.setStatus(HttpStatus.OK.value())
+  @PostMapping(path = Array("/users"))
+  def create_user(response: HttpServletResponse, @Validated @RequestBody createRequest: CreateUserRequest)
+  : Unit = {
+    val user: UserResponse = userService.createUser(createRequest)
+    response.getWriter.print(user.toString)
+    respond(response, HttpStatus.CREATED)
+  }
+
+  private def respond(response: HttpServletResponse, status: HttpStatus): Unit = {
+    response.setStatus(status.value())
     response.getWriter.flush()
     response.getWriter.close()
   }
