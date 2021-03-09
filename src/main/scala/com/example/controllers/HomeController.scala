@@ -1,28 +1,28 @@
 package com.example.controllers
 
+import com.example.model.{CreateUserRequest, UserResponse}
 import com.example.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.{GetMapping, RequestMapping, ResponseBody, RestController}
+import org.springframework.http.{HttpHeaders, HttpStatus, ResponseEntity}
+import org.springframework.validation.annotation.Validated
+import org.springframework.web.bind.annotation._
 
 import javax.servlet.http.HttpServletResponse
 
-@RequestMapping(path = Array("/users"))
 @RestController
+@RequestMapping(path = Array("/api"))
 class HomeController @Autowired()(private val userService: UserService) {
 
-  @GetMapping(path = Array("/res"))
-  @ResponseBody
-  def users(response: HttpServletResponse): Unit = {
-    response.getWriter.println("Dummy response")
-    respond(response)
+  @GetMapping(path = Array("/"))
+  def test: ResponseEntity[String] = {
+    new ResponseEntity("Test", new HttpHeaders, HttpStatus.OK)
   }
 
-  @GetMapping
-  @ResponseBody
+  @GetMapping(path = Array("/users"))
   def get_users(response: HttpServletResponse): Unit = {
-    response.getWriter.println(userService.getAllUsers)
-    respond(response)
+    val users = userService.getAllUsers
+    response.getWriter.print(users)
+    respond(response, HttpStatus.OK)
   }
 
   private def respond(response: HttpServletResponse): Unit = {
