@@ -1,12 +1,8 @@
 package com.example.entity
 
-import lombok.{Builder, Data}
-
 import java.beans.BeanProperty
 import javax.persistence._
 
-@Data
-@Builder
 @Entity
 class User {
   @Id
@@ -17,4 +13,10 @@ class User {
   var name: String = _
   @BeanProperty
   var address: String = _
+
+  def this(name: String, address: String) {
+    this()
+    this.name = name
+    this.address = address
+  }
 }
